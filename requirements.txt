@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+httpx
+sqlalchemy
+databases[postgresql]
+psycopg2-binary
