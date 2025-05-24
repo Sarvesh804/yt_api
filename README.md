@@ -14,6 +14,12 @@
 - Python 3.10+
 - PostgreSQL
 
+## Dashboard
+![Screenshot 2025-05-24 162507](https://github.com/user-attachments/assets/859c6705-a236-4aa8-9551-60662ffa61df)
+
+![Screenshot 2025-05-24 162520](https://github.com/user-attachments/assets/5ebb8efe-5e94-483e-ab86-5a925ea720ea)
+
+
 ## Setup
 
 1. Clone the repo and install dependencies:
