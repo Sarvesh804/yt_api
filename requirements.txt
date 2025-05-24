@@ -4,3 +4,4 @@ httpx
 sqlalchemy
 databases[postgresql]
 psycopg2-binary
+jinja2
