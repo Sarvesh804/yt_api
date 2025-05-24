@@ -1,15 +1,19 @@
-from sqlalchemy import Table, Column, String, DateTime, Text
+import sqlalchemy as sa
 from .db import metadata
 
-videos = Table(
+videos = sa.Table(
     "videos",
     metadata,
-    Column("video_id", String(32), primary_key=True),
-    Column("title", String(255),nullable=False),
-    Column("description", Text),
-    Column("thumbnail_url", String(255)),
-    Column("published_at", DateTime(timezone=True),nullable=False, index=True),
-    Column("etag", String(64), nullable=False, unique=True),
-    Column("channel_id", String(50)),
-    Column("channel_title", String(255)),
+    sa.Column("id", sa.Integer, primary_key=True),
+    sa.Column("video_id", sa.String, unique=True, index=True),
+    sa.Column("title", sa.String),
+    sa.Column("description", sa.Text),
+    sa.Column("published_at", sa.DateTime(timezone=True)),
+    sa.Column("thumbnail_url", sa.String),
+    sa.Column("etag", sa.String),
+    sa.Column("channel_id", sa.String),
+    sa.Column("channel_title", sa.String),
+    sa.Column("category_id", sa.String, nullable=True),
+    sa.Column("video_duration", sa.String, nullable=True),
+    sa.Column("video_type", sa.String, nullable=True),
 )

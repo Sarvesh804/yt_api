@@ -58,6 +58,9 @@ async def get_videos(
     video_id: Optional[str] = Query(None, description="Exact video ID"),
     sort_by: Optional[str] = Query("published_at", description="Sort by field"),
     order: Optional[str] = Query("desc", description="asc or desc"),
+    category_id: Optional[List[str]] = Query(None, description="YouTube Category IDs"),
+    video_duration: Optional[str] = Query(None, description="Video duration (short|medium|long)"),
+    video_type: Optional[str] = Query(None, description="Video type (episode|movie)"),
 ):
     query = videos.select()
     filters = []
@@ -76,6 +79,12 @@ async def get_videos(
         filters.append(videos.c.channel_id == channel_id)
     if video_id:
         filters.append(videos.c.video_id == video_id)
+    if category_id:
+        filters.append(videos.c.category_id.in_(category_id))
+    if video_duration:
+        filters.append(videos.c.video_duration == video_duration)
+    if video_type:
+        filters.append(videos.c.video_type == video_type)
 
     if filters:
         query = query.where(and_(*filters))
@@ -126,6 +135,7 @@ async def dashboard(
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "videos": videos_data,
+        "categories": YOUTUBE_CATEGORIES,
         "filters": {
             "title": title or "",
             "description": description or "",
@@ -134,7 +144,36 @@ async def dashboard(
             "channel_title": channel_title or "",
             "channel_id": channel_id or "",
             "video_id": video_id or "",
+            "limit": limit,
+            "offset": offset,
             "sort_by": sort_by or "published_at",
             "order": order or "desc",
+            "category_ids": request.query_params.getlist("category_id"),
+            "video_duration": request.query_params.get("video_duration", ""),
+            "video_type": request.query_params.get("video_type", ""),
         }
     })
+
+YOUTUBE_CATEGORIES = [
+    {"id": "1", "name": "Film & Animation"},
+    {"id": "2", "name": "Autos & Vehicles"},
+    {"id": "10", "name": "Music"},
+    {"id": "15", "name": "Pets & Animals"},
+    {"id": "17", "name": "Sports"},
+    {"id": "18", "name": "Short Movies"},
+    {"id": "19", "name": "Travel & Events"},
+    {"id": "20", "name": "Gaming"},
+    {"id": "22", "name": "People & Blogs"},
+    {"id": "23", "name": "Comedy"},
+    {"id": "24", "name": "Entertainment"},
+    {"id": "25", "name": "News & Politics"},
+    {"id": "26", "name": "Howto & Style"},
+    {"id": "27", "name": "Education"},
+    {"id": "28", "name": "Science & Technology"},
+    {"id": "29", "name": "Nonprofits & Activism"},
+    # ...add more as needed...
+]
+
+@app.get("/categories")
+async def get_categories():
+    return YOUTUBE_CATEGORIES

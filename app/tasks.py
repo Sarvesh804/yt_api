@@ -13,8 +13,8 @@ Youtube_api = os.getenv("YOUTUBE_API")
 API_KEYS = [Youtube_api]
 API_KEY_INDEX = 0
 
-SEARCH_QUERY = "official"
-FETCH_INTERVAL = 10 
+SEARCH_QUERY = "football | soccer | cricket | basketball | tennis | baseball | rugby | hockey | golf | athletics | esports"
+FETCH_INTERVAL = 120 
 BASE_URL = "https://www.googleapis.com/youtube/v3/search"
 
 
@@ -26,6 +26,7 @@ def get_next_api_key():
 
 
 async def fetch_latest_videos():
+    # Always use timezone-aware datetime
     published_after = datetime.now(timezone.utc) - timedelta(minutes=5)
 
     params = {
@@ -46,15 +47,21 @@ async def fetch_latest_videos():
 
             for item in data.get("items", []):
                 snippet = item["snippet"]
+                published_at_str = snippet["publishedAt"]
+                # Ensure offset-aware datetime
+                published_at = datetime.fromisoformat(published_at_str.replace("Z", "+00:00"))
                 video_data = {
                     "video_id": item["id"]["videoId"],
                     "title": snippet["title"],
                     "description": snippet.get("description"),
-                    "published_at": datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z", "+00:00")),
+                    "published_at": published_at,
                     "thumbnail_url": snippet["thumbnails"]["default"]["url"],
                     "etag": item["etag"],
                     "channel_id": snippet.get("channelId"),
                     "channel_title": snippet.get("channelTitle"),
+                    "category_id": snippet.get("categoryId"),
+                    "video_duration": snippet.get("duration"),  # You may need to fetch details from videos.list endpoint
+                    "video_type": snippet.get("type"),          # If available
                 }
 
                 
