@@ -128,7 +128,7 @@ async def dashboard(
         "order": order,
     }
     # Remove None values
-    params = {k: v for k, v in params.items() if v is not None}
+    params = {k: v for k, v in params.items() if v not in [None, ""]}
     async with httpx.AsyncClient() as client:
         resp = await client.get("http://localhost:8000/videos", params=params)
         videos_data = resp.json()
@@ -171,7 +171,6 @@ YOUTUBE_CATEGORIES = [
     {"id": "27", "name": "Education"},
     {"id": "28", "name": "Science & Technology"},
     {"id": "29", "name": "Nonprofits & Activism"},
-    # ...add more as needed...
 ]
 
 @app.get("/categories")

@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# To make support for supplying multiple API keys so that if quota is exhausted on one, it automatically uses the next available key.
 Youtube_api = os.getenv("YOUTUBE_API")
 API_KEYS = [Youtube_api]
 API_KEY_INDEX = 0

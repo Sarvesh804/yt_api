@@ -114,7 +114,7 @@
                             <div class="text-xs text-gray-500 mb-2 truncate">{{ video.channel_title }}</div>
                             <div class="text-sm text-gray-700 line-clamp-2 mb-2" title="{{ video.description }}">{{ video.description }}</div>
                             <div class="mt-auto flex items-center justify-between text-xs text-gray-400">
-                                <span>{{ video.published_at[:10] }}</span>
+                                <span>{{ video['published_at'][:10] }}</span>
                                 {% if video.video_duration %}
                                 <span class="ml-2">{{ video.video_duration }}</span>
                                 {% endif %}
@@ -133,7 +133,7 @@
             <div class="flex justify-center items-center gap-4 mt-10 mb-8">
                 <form method="get" action="/" class="inline">
                     {% for key, value in filters.items() %}
-                        {% if key != 'offset' and key != 'limit' and value %}
+                        {% if key not in ["offset", "limit"] and value %}
                             {% if value is iterable and value is not string %}
                                 {% for v in value %}
                                     <input type="hidden" name="{{ key }}" value="{{ v }}">
@@ -153,7 +153,7 @@
                 <span class="text-gray-600 font-medium">Page {{ (current_offset // limit) + 1 }}</span>
                 <form method="get" action="/" class="inline">
                     {% for key, value in filters.items() %}
-                        {% if key != 'offset' and key != 'limit' and value %}
+                        {% if key not in ["offset", "limit"] and value %}
                             {% if value is iterable and value is not string %}
                                 {% for v in value %}
                                     <input type="hidden" name="{{ key }}" value="{{ v }}">
