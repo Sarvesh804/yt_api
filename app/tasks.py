@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # To make support for supplying multiple API keys so that if quota is exhausted on one, it automatically uses the next available key.
-Youtube_api = os.getenv("YOUTUBE_API")
-API_KEYS = [Youtube_api]
+Youtube_apis = os.getenv("YOUTUBE_API_KEYS")
+API_KEYS = [k.strip() for k in Youtube_apis.split(",") if k.strip()]
 API_KEY_INDEX = 0
 
 SEARCH_QUERY = "football | soccer | cricket | basketball | tennis | baseball | rugby | hockey | golf | athletics | esports"

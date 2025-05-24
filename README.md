@@ -32,9 +32,10 @@
 
    ```
    DATABASE_URL=postgresql://user:password@localhost:5432/yourdb
+   YOUTUBE_API_KEYS=key1,key2,key3
    ```
 
-3. (Optional, for new DBs) Create tables:
+3. Create tables:
 
    ```
    # If you want to reset the videos table (dev only):
